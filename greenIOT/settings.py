@@ -1,4 +1,3 @@
-import django_heroku
 from pathlib import Path
 import os
 from decouple import config
@@ -79,8 +78,12 @@ WSGI_APPLICATION = 'greenIOT.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+#        'ENGINE': 'django.db.backends.sqlite3',
+#        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'OPTIONS': {
+            'read_default_file': os.path.join(BASE_DIR, 'my.cnf'),
+        },
     }
 }
 
@@ -127,6 +130,8 @@ USE_TZ = True
 
 # STATIC_ROOT = ''
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  #'staticfiles'
+
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = ( os.path.join('static'), )
@@ -143,4 +148,40 @@ STRIPE_PUBLISHABLE_KEY = config('STRIPE_PUBLISHABLE_KEY')
 STRIPE_PLAN_MONTHLY_ID = config('STRIPE_PLAN_MONTHLY_ID')
 STRIPE_PLAN_ANNUAL_ID = config('STRIPE_PLAN_ANNUAL_ID')
 STRIPE_WEBHOOK_SIGNING_KEY = config('STRIPE_WEBHOOK_SIGNING_KEY')
-django_heroku.settings(locals())
+
+# Log anyways
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format' : "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
+            'datefmt' : "%d/%b/%Y %H:%M:%S"
+        },
+        'simple': {
+            'format': '%(levelname)s %(message)s'
+        },
+    },
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': '/tmp/mysite.log',
+            'formatter': 'verbose'
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers':['file'],
+            'propagate': True,
+            'level':'DEBUG',
+        },
+        'MYAPP': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+        },
+    }
+}
+
+
+DEBUG_PROPAGATE_EXCEPTIONS = True
