@@ -1,5 +1,5 @@
 FROM python:3.9.4-buster
-RUN apt-get install libmariadb-dev-compat  libpq-dev nginx
+RUN apt-get update && apt-get upgrade -y && apt-get install -y libmariadb-dev-compat  libpq-dev nginx && rm -rf /var/lib/apt/cache
 # Static files
 COPY nginx.default /etc/nginx/sites-available/default
 # Make nginx logging go to stdout/stderr for debugging
