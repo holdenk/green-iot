@@ -1,4 +1,5 @@
 #!/bin/bash
+set -x
 if [ ! -d venv ]; then
    deactivate || echo "no venv active"
    conda deactivate || echo "no conda active"
@@ -7,4 +8,4 @@ fi
 source ./venv/bin/activate
 pip install -r requirements.txt   
 python manage.py collectstatic
-docker buildx -t holdenk/green-iot-web:latest --push  --platform linux/arm64,linux/amd64 . 
+docker buildx build -t holdenk/green-iot-web:latest --push  --platform linux/arm64,linux/amd64 . 
