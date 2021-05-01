@@ -11,7 +11,7 @@ RUN mkdir /opt/app
 WORKDIR /opt/app
 COPY . /opt/app
 RUN pip install -r /opt/app/requirements.txt --no-cache-dir
-RUN chown -R www-data:www-data /django
+RUN chown -R www-data:www-data /opt/app
 EXPOSE 8020
 STOPSIGNAL SIGTERM
 CMD ["/opt/app/start-server.sh"]
