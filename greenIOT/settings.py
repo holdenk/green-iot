@@ -136,9 +136,9 @@ STATIC_URL = '/static/'
 
 STATICFILES_DIRS = ( os.path.join('static'), )
 
-DEFAULT_FROM_EMAIL = 'GreenIOT Team <noreply@example.com>'
+DEFAULT_FROM_EMAIL = config("EMAIL_FROM_USER", "Green IOT <greeniot@pigscanfly.ca>")
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST = config("EMAIL_HOST")
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = config('EMAIL_HOST_USER')
